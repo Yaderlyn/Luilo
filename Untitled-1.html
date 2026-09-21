@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flores Amarillas</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: radial-gradient(circle at center, #1b1600 0%, #080700 100%);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 90%;
+            width: 480px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 20px 2px rgba(255, 215, 0, 0.2);
+            z-index: 10;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        .title {
+            color: #ffea79;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            text-shadow: 0 0 12px rgba(255, 234, 121, 0.6);
+            line-height: 1.3;
+        }
+        
+        .message {
+            color: #fff8d6;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.8rem;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtext {
+            color: #ffd700;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        }
+        
+        .flower,
+        .particle {
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .flower {
+            top: -60px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(108vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes burst {
+            0% {
+                transform: translate(-50%, -50%) scale(0.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="title">Tu osito te envía flores amarillas virtuales 🧸💛</div>
+        <div class="message">
+            Eres muy especial mi flaca hermosa, no te sientas mal por estar lejos de todo, tienes personas que te aman tanto como yo
+        </div>
+        <div class="subtext">tu ingeniero siempre resuelve 🛠️💛</div>
+    </div>
+
+    <script>
+        const flowers = ['🌻', '🌼', '💛', '✨', '🌸'];
+
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.classList.add('flower');
+            flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+
+            const startLeft = Math.random() * 100;
+            flower.style.left = startLeft + 'vw';
+
+            const size = Math.random() * 24 + 18;
+            flower.style.fontSize = size + 'px';
+
+            const duration = Math.random() * 4 + 3;
+            flower.style.animationDuration = duration + 's';
+
+            document.body.appendChild(flower);
+
+            setTimeout(() => {
+                flower.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createFlower, 180);
+
+        // Efecto de toque / clic en pantalla
+        window.addEventListener('click', (e) => {
+            const count = 12;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.fontSize = (Math.random() * 20 + 16) + 'px';
+
+                const angle = (Math.PI * 2 / count) * i + (Math.random() * 0.5);
+                const distance = Math.random() * 80 + 40;
+                const dx = Math.cos(angle) * distance + 'px';
+                const dy = Math.sin(angle) * distance + 'px';
+
+                particle.style.setProperty('--dx', dx);
+                particle.style.setProperty('--dy', dy);
+                particle.style.animation = 'burst 0.8s ease-out forwards';
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        });
+    </script>
+</body>
+
+</html>
